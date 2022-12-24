@@ -13,15 +13,15 @@ win.fill("black")
 
 pygame.display.set_caption("Algorhythms")
 
+GAME_FONT = pygame.font.SysFont('Comic Sans MS', 15)
 running = True
 clock = pygame.time.Clock()
 
-values = []
-
-for _ in range(50):
-	values.append(random.randint(20, HEIGHT - 20))
-
-print(values)
+def generate_list():
+	values = []
+	for _ in range(50):
+		values.append(random.randint(20, HEIGHT - 20))
+	return values
 
 i = 0
 j = 0
@@ -62,9 +62,16 @@ def draw_list(arr, window, color_indices):
 
 	pygame.display.update()
 
+values = generate_list()
+sorting_algorithm = bubble_sort
+algorithm_name = 'BUBBLE SORT'
+
+instructions = 'R - Reset | S - Selection Sort | B - Bubble Sort | SPACE - Start Sorting'
+instructions_surface = GAME_FONT.render(instructions, 1, WHITE)
+
 while running:
 
-	clock.tick(60)
+	clock.tick(30)
 	if sorting:
 		try:
 			next(g)
@@ -76,12 +83,22 @@ while running:
 			running = False
 		if event.type != pygame.KEYDOWN:
 			continue
-		if event.key == pygame.K_SPACE:
+		if event.key == pygame.K_r and not sorting:
+			values = generate_list()
+		if event.key == pygame.K_s and not sorting:
+			sorting_algorithm = selection_sort
+			algorithm_name = 'SELECTION SORT'
+		if event.key == pygame.K_b and not sorting:
+			sorting_algorithm = bubble_sort
+			algorithm_name = 'BUBBLE SORT'
+		if event.key == pygame.K_SPACE and not sorting:
 			sorting = True
-			g = selection_sort(values, win)
+			g = sorting_algorithm(values, win)
 
 	draw_list(values, win, [])
+	status = GAME_FONT.render(f'{algorithm_name}', 1, WHITE)
+	win.blit(status, (5, 5))
+	win.blit(instructions_surface, (5, 25))
 	pygame.display.update()
 
 pygame.quit()
-print(values)
