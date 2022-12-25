@@ -8,13 +8,13 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
+GAME_FONT = pygame.font.SysFont('Comic Sans MS', 15)
+
 win = pygame.display.set_mode((WIDTH, HEIGHT))
 win.fill("black")
 
 pygame.display.set_caption("Algorhythms")
 
-GAME_FONT = pygame.font.SysFont('Comic Sans MS', 15)
-running = True
 clock = pygame.time.Clock()
 
 def generate_list():
@@ -23,8 +23,6 @@ def generate_list():
 		values.append(random.randint(20, HEIGHT - 20))
 	return values
 
-i = 0
-j = 0
 
 def bubble_sort(arr, window):
 	for i in range(len(arr)):
@@ -33,6 +31,7 @@ def bubble_sort(arr, window):
 				arr[j], arr[j + 1] = arr[j + 1], arr[j]
 				draw_list(arr, window, [j, j + 1])
 				yield True
+
 
 def selection_sort(arr, window):
 	for i in range(len(arr)):
@@ -44,7 +43,6 @@ def selection_sort(arr, window):
 		draw_list(arr, window, [min_idx, i])
 		yield True
 
-sorting = False
 
 def draw_list(arr, window, color_indices):
 	window.fill("black")
@@ -62,12 +60,17 @@ def draw_list(arr, window, color_indices):
 
 	pygame.display.update()
 
-values = generate_list()
+
 sorting_algorithm = bubble_sort
 algorithm_name = 'BUBBLE SORT'
 
 instructions = 'R - Reset | S - Selection Sort | B - Bubble Sort | SPACE - Start Sorting'
 instructions_surface = GAME_FONT.render(instructions, 1, WHITE)
+
+values = generate_list()
+
+running = True
+sorting = False
 
 while running:
 
